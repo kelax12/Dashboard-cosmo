@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Repeat, Target, CheckSquare, Calendar, Zap, Award, Leaf } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { useTasks as useTasksContext } from '../context/TaskContext';
 import { useTasks } from '@/modules/tasks';
 import { useHabits } from '@/modules/habits';
@@ -77,34 +77,57 @@ const DashboardPage: React.FC = () => {
     }
   };
 
+    const sparklines = [
+      [3, 7, 5, 9, 6, 11, 8, 13, 10, 15, 12, 14],
+      [5, 4, 8, 6, 10, 7, 9, 12, 8, 11, 13, 10],
+      [2, 6, 4, 8, 5, 9, 7, 10, 8, 12, 9, 11],
+      [4, 7, 5, 10, 6, 8, 11, 7, 13, 9, 12, 14],
+    ];
+
+    const Sparkline = ({ data }: { data: number[] }) => {
+      const w = 100, h = 40;
+      const min = Math.min(...data), max = Math.max(...data);
+      const range = max - min || 1;
+      const pts = data.map((v, i) => [
+        (i / (data.length - 1)) * w,
+        h - ((v - min) / range) * (h - 6) - 3
+      ]);
+      const path = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
+      const area = `${path} L${w},${h} L0,${h} Z`;
+      return (
+        <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-10" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgb(59,130,246)" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="rgb(59,130,246)" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path d={area} fill="url(#sg)" />
+          <path d={path} fill="none" stroke="rgb(59,130,246)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    };
+
     const statCards = [
       {
-        icon: CheckSquare,
         label: 'Tâches complétées',
         value: completedTasksToday,
         subtitle: "Aujourd'hui",
-        color: 'blue'
       },
       {
-        icon: Calendar,
         label: 'Agenda',
         value: todayEvents.length,
         subtitle: "Événements aujourd'hui",
-        color: 'blue'
       },
       {
-        icon: Target,
         label: 'OKR actifs',
         value: activeOKRs.length,
         subtitle: 'En cours',
-        color: 'blue'
       },
       {
-        icon: Repeat,
         label: 'Habitudes',
         value: todayHabits.length,
         subtitle: 'Réalisées',
-        color: 'blue'
       }
     ];
 
@@ -159,13 +182,12 @@ const DashboardPage: React.FC = () => {
                     whileHover={{ y: -4, scale: 1.02 }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
                   >
-                      <div className="p-5 lg:p-6 h-full bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-border))] rounded-2xl transition-all duration-300 group-hover:shadow-xl group-hover:border-[rgb(var(--color-accent)/0.5)] group-hover:bg-[rgb(var(--color-accent)/0.02)] monochrome:group-hover:border-white/20 monochrome:group-hover:bg-white/[0.02]">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-2">
+                      <div className="p-5 lg:p-6 h-full bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-border))] rounded-2xl transition-all duration-300 group-hover:shadow-xl group-hover:border-[rgb(var(--color-accent)/0.5)] group-hover:bg-[rgb(var(--color-accent)/0.02)] monochrome:group-hover:border-white/20 monochrome:group-hover:bg-white/[0.02] overflow-hidden">
+                        <div className="space-y-2 mb-3">
                             <p className="text-sm text-[rgb(var(--color-text-secondary))] font-bold group-hover:text-[rgb(var(--color-accent))] transition-colors monochrome:group-hover:text-white">
                               {stat.label}
                             </p>
-                            <motion.p 
+                            <motion.p
                               className="text-3xl lg:text-4xl font-black text-[rgb(var(--color-text-primary))]"
                               initial={{ scale: 0.8, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
@@ -178,10 +200,9 @@ const DashboardPage: React.FC = () => {
                               {stat.subtitle}
                           </p>
                         </div>
-                        <div className="p-3 rounded-xl bg-[rgb(var(--color-accent)/0.15)] border border-[rgb(var(--color-accent)/0.3)] group-hover:bg-[rgb(var(--color-accent))] group-hover:text-white transition-all duration-300 monochrome:bg-white/10 monochrome:border-white/20 monochrome:group-hover:bg-white monochrome:group-hover:text-zinc-900">
-                          <stat.icon size={22} className="group-hover:text-white transition-colors monochrome:group-hover:text-zinc-900" strokeWidth={2.5} />
+                        <div className="mx-[-20px] mb-[-24px]">
+                          <Sparkline data={sparklines[index]} />
                         </div>
-                      </div>
                     </div>
                 </motion.div>
               ))}
