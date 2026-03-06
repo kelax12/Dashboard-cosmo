@@ -1,5 +1,5 @@
 import React from 'react';
-import { Repeat, Clock, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useHabits, useToggleHabitCompletion } from '@/modules/habits';
 
@@ -28,9 +28,6 @@ const TodayHabits: React.FC = () => {
     return (
       <div className="card p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-indigo-50 dark:bg-purple-900/20 rounded-xl border border-indigo-100 dark:border-purple-800/30">
-            <Repeat size={24} className="text-indigo-600 dark:text-purple-400" />
-          </div>
           <div>
             <h2 className="text-xl font-bold text-[rgb(var(--color-text-primary))]">Habitudes du jour</h2>
             <p className="text-[rgb(var(--color-text-secondary))] text-sm">Chargement...</p>
@@ -48,9 +45,6 @@ const TodayHabits: React.FC = () => {
   return (
     <div className="card p-6">
     <div className="flex items-center gap-3 mb-6">
-      <div className="p-2 bg-indigo-50 dark:bg-purple-900/20 rounded-xl border border-indigo-100 dark:border-purple-800/30">
-        <Repeat size={24} className="text-indigo-600 dark:text-purple-400" />
-      </div>
       <div>
         <h2 className="text-xl font-bold text-[rgb(var(--color-text-primary))]">Habitudes du jour</h2>
         <p className="text-[rgb(var(--color-text-secondary))] text-sm">
@@ -96,7 +90,6 @@ const TodayHabits: React.FC = () => {
                     </h3>
                 <div className="flex items-center gap-4 mt-1">
                   <div className={`flex items-center gap-1 text-sm ${habit.completedToday ? 'text-blue-100 dark:text-blue-400/80' : 'text-[rgb(var(--color-text-secondary))]'}`}>
-                    <Clock size={14} />
                     <span>{habit.estimatedTime} min</span>
                   </div>
                   <div className={`flex items-center gap-1 text-sm font-medium ${habit.completedToday ? 'text-white/90 dark:text-orange-400' : 'text-orange-600 dark:text-orange-400'}`}>
@@ -111,7 +104,6 @@ const TodayHabits: React.FC = () => {
 
         {todayHabits.length === 0 &&
         <div className="text-center py-8 text-[rgb(var(--color-text-muted))]">
-            <Repeat size={48} className="mx-auto mb-4 text-gray-300 dark:text-gray-600" />
             <p>Aucune habitude configurée</p>
             <p className="text-sm">Ajoutez des habitudes dans la section dédiée</p>
           </div>
