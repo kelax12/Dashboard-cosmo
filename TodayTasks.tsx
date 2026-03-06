@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { CheckSquare, Clock, Bookmark, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import CollaboratorAvatars from './CollaboratorAvatars';
 
@@ -61,7 +60,7 @@ const TodayTasks: React.FC = () => {
   };
 
   const getPriorityIcon = (priority: number) => {
-    if (priority <= 2) return <AlertCircle size={16} className="text-[rgb(var(--color-error))]" />;
+    if (priority <= 2) return <span className="text-xs font-bold text-[rgb(var(--color-error))]">!</span>;
     return null;
   };
 
@@ -83,9 +82,6 @@ const TodayTasks: React.FC = () => {
     return (
       <div className="p-6 bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-border))] rounded-2xl shadow-sm">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-[rgb(var(--color-accent)/0.15)] rounded-xl">
-            <CheckSquare size={24} className="text-[rgb(var(--color-accent))]" />
-          </div>
           <div>
             <div className="h-5 w-32 bg-[rgb(var(--color-border))] rounded animate-pulse mb-2"></div>
             <div className="h-4 w-24 bg-[rgb(var(--color-border))] rounded animate-pulse"></div>
@@ -111,9 +107,6 @@ const TodayTasks: React.FC = () => {
   return (
     <div className="p-6 bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-border))] rounded-2xl shadow-sm">
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-[rgb(var(--color-accent)/0.15)] rounded-xl">
-          <CheckSquare size={24} className="text-[rgb(var(--color-accent))]" />
-        </div>
         <div>
           <h2 className="text-lg font-bold text-[rgb(var(--color-text-primary))]">Tâches prioritaires</h2>
           <p className="text-[rgb(var(--color-text-secondary))] text-sm">
@@ -178,7 +171,6 @@ const TodayTasks: React.FC = () => {
                   
                   <div className="flex items-center gap-4 text-sm text-[rgb(var(--color-text-secondary))]">
                     <div className="flex items-center gap-1">
-                      <Clock size={14} />
                       <span>{task.estimatedTime} min</span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -203,13 +195,9 @@ const TodayTasks: React.FC = () => {
                       e.stopPropagation();
                       handleToggleBookmark(task.id);
                     }}
-                    className="flex-shrink-0 p-1 rounded-md transition-colors hover:bg-[rgb(var(--color-hover))]"
-                  >
-                    <Bookmark 
-                      size={18} 
-                      className={task.bookmarked ? 'favorite-icon filled' : 'text-[rgb(var(--color-text-muted))] hover:text-blue-500 dark:hover:text-blue-400'} 
-                    />
-                  </button>
+                    className={`flex-shrink-0 w-2 h-2 rounded-full transition-colors ${task.bookmarked ? 'bg-[rgb(var(--color-accent))]' : 'bg-[rgb(var(--color-border))]'}`}
+                    title={task.bookmarked ? "Retirer le favori" : "Ajouter aux favoris"}
+                  />
                 </div>
 
               </div>
@@ -219,7 +207,6 @@ const TodayTasks: React.FC = () => {
 
         {todayTasks.length === 0 && (
           <div className="text-center py-8 text-[rgb(var(--color-text-muted))]">
-            <CheckSquare size={48} className="mx-auto mb-4 opacity-30" />
             <p>Aucune tâche prioritaire</p>
             <p className="text-sm">Toutes vos tâches urgentes sont terminées !</p>
           </div>
