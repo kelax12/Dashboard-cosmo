@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Settings, Eye, EyeOff } from 'lucide-react';
 import { usePendingTasks } from '@/modules/tasks';
 import { useCategories } from '@/modules/categories';
 import ColorSettingsModal from './ColorSettingsModal';
@@ -57,7 +56,7 @@ const TasksSummary: React.FC<TasksSummaryProps> = ({
           {onTogglePosition && (
             <button
               onClick={onTogglePosition}
-              className="p-2 rounded-lg transition-colors hidden xl:block"
+              className="p-2 rounded-lg transition-colors text-xs hidden xl:block"
               style={{ color: 'rgb(var(--color-text-muted))' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = 'rgb(var(--color-text-secondary))';
@@ -69,12 +68,12 @@ const TasksSummary: React.FC<TasksSummaryProps> = ({
               }}
               title={isBottomPosition ? "Afficher sur le côté" : "Afficher en bas"}
             >
-              {isBottomPosition ? <Eye size={18} /> : <EyeOff size={18} />}
+              {isBottomPosition ? '↑' : '↓'}
             </button>
           )}
           <button
             onClick={() => setShowColorSettings(true)}
-            className="p-2 rounded-lg transition-colors"
+            className="p-2 rounded-lg transition-colors text-xs"
             style={{ color: 'rgb(var(--color-text-muted))' }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = 'rgb(var(--color-text-secondary))';
@@ -86,7 +85,7 @@ const TasksSummary: React.FC<TasksSummaryProps> = ({
             }}
             title="Modifier la légende des couleurs"
           >
-            <Settings size={18} />
+            ⚙
           </button>
         </div>
         
